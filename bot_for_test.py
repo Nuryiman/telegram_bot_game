@@ -13,22 +13,25 @@ ids = {}
 @bot.message_handler(commands=['start'])
 def start(message):
     bot.send_message(message.chat.id, 'Добро пожаловать на опрос!')
-    ids[message.chat.id] = {questions[0]: None, questions[1]: None, questions[2]: None}
+    ids[message.chat.id] = {}
     bot.send_message(message.chat.id, questions[0])
     print(ids)
 
+
 @bot.message_handler(func=lambda message: True)
 def answers(message):
-    bot.send_message(LOID, f'{message.from_user.first_name}: {message.text}')
-    if questions[0] in ids[message.chat.id].keys():
-        bot.send_message(message.chat.id, questions[1])
-    if questions[0] in ids[message.chat.id].keys():
-        ids[message.chat.id] = {questions[1]: message.text}
+    if questions[0] in ids[message.chat.id].keys() and questions[1] not in ids[message.chat.id].keys():
+        ids[message.chat.id][questions[1]] = message.text
         bot.send_message(message.chat.id, questions[2])
-    if questions[1] in ids.keys():
-        ids[message.chat.id][message.chat.id] = {questions[2]: message.text}
+        bot.send_message(LOID, f' {questions[1]}\n {message.from_user.first_name}: {message.text}')
+    elif questions[1] in ids[message.chat.id].keys() and questions[2] not in ids[message.chat.id].keys():
+        ids[message.chat.id][questions[2]] = message.text
+        bot.send_message(message.chat.id, questions[2])
+        bot.send_message(LOID, f' {questions[2]}\n {message.from_user.first_name}: {message.text}')
     else:
-        ids[message.chat.id] = {questions[0]: message.text}
+        ids[message.chat.id][questions[0]] = message.text
+        bot.send_message(message.chat.id, questions[1])
+        bot.send_message(LOID, f'{questions[0]}\n {message.from_user.first_name}: {message.text}')
     print(ids)
     print(ids.keys())
 
