@@ -13,20 +13,24 @@ ids = {}
 @bot.message_handler(commands=['start'])
 def start(message):
     bot.send_message(message.chat.id, 'Добро пожаловать на опрос!')
-    ids[message.chat.id] = {questions[0]: None}
-    ids[message.chat.id] = {questions[1]: None}
-    ids[message.chat.id] = {questions[2]: None}
+    ids[message.chat.id] = {questions[0]: None, questions[1]: None, questions[2]: None}
     bot.send_message(message.chat.id, questions[0])
+    print(ids)
 
 @bot.message_handler(func=lambda message: True)
 def answers(message):
-    ids[message.chat.id] = {questions[0]: message.text}
     bot.send_message(LOID, f'{message.from_user.first_name}: {message.text}')
-    bot.send_message(message.chat.id, questions[1])
-    if ids[message.chat.id][questions[0]: not None]:
-        ids[message.chat.id] = {answer.append(message.text)}
-    if ids[message.chat.id][questions[0]: not None] and ids[message.chat.id][questions[1]: not None]:
-        ids[message.chat.id] = {questions[2]: message.text}
+    if questions[0] in ids[message.chat.id].keys():
+        bot.send_message(message.chat.id, questions[1])
+    if questions[0] in ids[message.chat.id].keys():
+        ids[message.chat.id] = {questions[1]: message.text}
+        bot.send_message(message.chat.id, questions[2])
+    if questions[1] in ids.keys():
+        ids[message.chat.id][message.chat.id] = {questions[2]: message.text}
+    else:
+        ids[message.chat.id] = {questions[0]: message.text}
+    print(ids)
+    print(ids.keys())
 
 
 bot.infinity_polling()
