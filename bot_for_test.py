@@ -28,12 +28,13 @@ def answers(message):
         ids[message.chat.id][questions[2]] = message.text
         bot.send_message(message.chat.id, questions[2])
         bot.send_message(LOID, f' {questions[2]}\n {message.from_user.first_name}: {message.text}')
+    elif questions[1] in ids[message.chat.id].keys() and questions[2] in ids[message.chat.id].keys():
+        bot.send_message(message.chat.id, 'Вы уже завершили опрос, если хотите начать заново нажмите /start')
     else:
         ids[message.chat.id][questions[0]] = message.text
         bot.send_message(message.chat.id, questions[1])
         bot.send_message(LOID, f'{questions[0]}\n {message.from_user.first_name}: {message.text}')
     print(ids)
-    print(ids.keys())
 
 
 bot.infinity_polling()
